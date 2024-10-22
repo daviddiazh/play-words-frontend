@@ -1,4 +1,6 @@
 import { useAuth } from "../../context/auth/AuthProvider"
+import PW from '../../assets/PlayWords.png'
+import styles from './styles.module.css';
 
 export const Header = () => {
 
@@ -6,7 +8,9 @@ export const Header = () => {
 
   return (
     <div>
-      <p>Header</p>
+      <div className={styles['logo-container']}>
+        <img src={PW} alt="Logo de Play" className={styles.logo} />
+      </div>
       {
         status === 'authenticated' && <button onClick={logout}>Logout</button>
       }

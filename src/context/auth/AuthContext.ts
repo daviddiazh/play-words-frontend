@@ -9,7 +9,7 @@ export enum Role {
 }
 
 export interface IUser {
-    _id: string;
+    _id?: string;
     email: string;
     name: string;
     role: Role;
@@ -20,6 +20,7 @@ interface AuthStateProps {
     status: AuthStatus;
 
     login: (user: { email: string, password: string }) => void;
+    enrollment: (user: any) => void;
     logout: () => Promise<void>;
 }
 

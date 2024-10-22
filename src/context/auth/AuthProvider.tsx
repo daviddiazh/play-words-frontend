@@ -4,6 +4,7 @@ import { authReducer } from "./authReducer";
 import { useAxios } from "../../hooks/useAxios";
 import { Loading } from "../../components/Loading";
 import { useIndexedDBStore } from "use-indexeddb";
+import { Bounce, toast } from "react-toastify";
 
 export interface AuthInitialState {
     user: IUser | undefined;
@@ -23,8 +24,6 @@ export const AuthProvider: FC<{children: ReactNode}> = ({ children }) => {
     const { add, getByID, deleteAll } = useIndexedDBStore("user");
 
     const logout = async () => {
-        checking();
-        
         dispatch({type: 'Auth - Logout'});
         deleteAll()
         localStorage.getItem('id')
@@ -38,27 +37,47 @@ export const AuthProvider: FC<{children: ReactNode}> = ({ children }) => {
     const checking = () => dispatch({type: 'Auth - Checking'});
 
     const login = async (user: { email: string, password: string }) => {
-        checking();
+        // checking();
         const resp = await post('/api/auth/login', user);
-        dispatch({type: 'Auth - Login', payload: resp});
-        await add({
-            id: resp?.user?._id,
-            user: {
-                name: resp?.user?.name,
-                email: resp?.user?.email,
-                _id: resp?.user?._id,
-                role: resp?.user?.role,
-            },
-        }).then(console.log).catch(console.error);
-        localStorage.setItem('id', resp?.user?._id)
-        localStorage.setItem('token', resp?.token)
+        if (resp?.token) {
+            dispatch({type: 'Auth - Login', payload: resp});
+            await add({
+                id: resp?.user?._id,
+                user: {
+                    name: resp?.user?.name,
+                    email: resp?.user?.email,
+                    _id: resp?.user?._id,
+                    role: resp?.user?.role,
+                },
+            }).then(console.log).catch(console.error);
+            localStorage.setItem('id', resp?.user?._id)
+            localStorage.setItem('token', resp?.token)
+        } else {
+            logout()
+        }
+    }
+
+    const enrollment = async (user: IUser) => {
+        const resp = await post('/api/auth/enrollment', user);
+        if (resp?.enrolled) {
+            return toast.success('Ahora puedes iniciar sesión con tu cuenta', {
+                position: "top-right",
+                autoClose: 6000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'colored',
+                transition: Bounce,
+            });
+        }
     }
 
     useEffect(() => {
         const id = localStorage.getItem('id') ?? ''
         getByID(id)
             .then((data: any) => {
-                console.log({ data })
                 if (data?.id) {
                     return dispatch({
                         type: 'Auth - Login', 
@@ -82,7 +101,8 @@ export const AuthProvider: FC<{children: ReactNode}> = ({ children }) => {
             ...state,
 
             login,
-            logout
+            logout,
+            enrollment,
         }}>
             { children }
         </AuthContext.Provider>

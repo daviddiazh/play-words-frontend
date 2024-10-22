@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Input } from '../../../components/Input'
 import { useAuth } from '../../../context/auth/AuthProvider';
 import { useForm } from '../../../hooks/useForm'
@@ -7,8 +8,8 @@ import { FormEvent } from 'react';
 export const Login = () => {
 
     const { email, password, onInputChange } = useForm({
-        email: 'david@gmail.com',
-        password: '12345678'
+        email: '',
+        password: ''
     });
 
     const { login } = useAuth();
@@ -50,6 +51,14 @@ export const Login = () => {
                             Ingresar
                         </button>
                     </form>
+
+                    <p className={styles.o}>ó</p>
+
+                    <div style={{ marginTop: 15 }}>
+                        <Link to='/enrollment' className={styles.link}>
+                            <p>¿No tienes una? Crea una cuenta gratis</p>
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>

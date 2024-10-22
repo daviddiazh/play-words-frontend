@@ -17,8 +17,8 @@ export const useAxios = (opt: OptProps) => {
       );
       return data;
     } catch (error: any) {
-      if (error.response) {
-        validate(error.response);
+      if (error.response?.data) {
+        validate(error.response?.data);
       } else {
         console.error('Server Error: ', error);
       }
@@ -34,8 +34,8 @@ export const useAxios = (opt: OptProps) => {
       );
       return data;
     } catch (error: any) {
-      if (error.response) {
-        validate(error.response);
+      if (error.response?.data) {
+        validate(error.response?.data);
       } else {
         console.error('Server Error: ', error);
       }
@@ -52,8 +52,8 @@ export const useAxios = (opt: OptProps) => {
       );
       return data;
     } catch (error: any) {
-      if (error.response) {
-        validate(error.response);
+      if (error.response?.data) {
+        validate(error.response?.data);
       } else {
         console.error('Server Error: ', error);
       }
@@ -69,8 +69,8 @@ export const useAxios = (opt: OptProps) => {
       );
       return data;
     } catch (error: any) {
-      if (error.response) {
-        validate(error.response);
+      if (error.response?.data) {
+        validate(error.response?.data);
       } else {
         console.error('Server Error: ', error);
       }
@@ -85,8 +85,8 @@ export const useAxios = (opt: OptProps) => {
       );
       return data;
     } catch (error: any) {
-      if (error.response) {
-        validate(error.response);
+      if (error.response?.data) {
+        validate(error.response?.data);
       } else {
         console.error('Server Error: ', error);
       }
@@ -106,8 +106,8 @@ export const useAxios = (opt: OptProps) => {
       if (!response.body) throw new Error('ReadableStream not supported');
       return response;
     } catch (error: any) {
-      if (error.response) {
-        validate(error.response);
+      if (error.response?.data) {
+        validate(error.response?.data);
       } else {
         console.error('Server Error: ', error);
       }

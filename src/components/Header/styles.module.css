@@ -1,0 +1,10 @@
+.logo-container {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    padding-top: 25px;
+}
+
+.logo {
+    width: 150px;
+}

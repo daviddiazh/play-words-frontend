@@ -1,4 +1,4 @@
-import { FC, ReactNode, useContext, useEffect, useReducer } from "react"
+import { FC, ReactNode, useContext, useEffect, useReducer, useState } from "react"
 import { AuthContext, AuthStatus, IUser } from './AuthContext';
 import { authReducer } from "./authReducer";
 import { useAxios } from "../../hooks/useAxios";
@@ -22,6 +22,7 @@ export const AuthProvider: FC<{children: ReactNode}> = ({ children }) => {
 
     const [ state, dispatch ] = useReducer(authReducer, INITIAL_STATE);
     const { add, getByID, deleteAll } = useIndexedDBStore("user");
+    const [ loginFlag, setLoginFlag ] = useState(false);
 
     const logout = async () => {
         dispatch({type: 'Auth - Logout'});
@@ -34,12 +35,13 @@ export const AuthProvider: FC<{children: ReactNode}> = ({ children }) => {
         logout,
     });
 
-    const checking = () => dispatch({type: 'Auth - Checking'});
+    // const checking = () => dispatch({type: 'Auth - Checking'});
 
     const login = async (user: { email: string, password: string }) => {
         // checking();
         const resp = await post('/api/auth/login', user);
         if (resp?.token) {
+            setLoginFlag(true)
             dispatch({type: 'Auth - Login', payload: resp});
             await add({
                 id: resp?.user?._id,
@@ -52,8 +54,6 @@ export const AuthProvider: FC<{children: ReactNode}> = ({ children }) => {
             }).then(console.log).catch(console.error);
             localStorage.setItem('id', resp?.user?._id)
             localStorage.setItem('token', resp?.token)
-        } else {
-            logout()
         }
     }
 
@@ -78,7 +78,8 @@ export const AuthProvider: FC<{children: ReactNode}> = ({ children }) => {
         const id = localStorage.getItem('id') ?? ''
         getByID(id)
             .then((data: any) => {
-                if (data?.id) {
+                if (data?.id || loginFlag) {
+                    setLoginFlag(false)
                     return dispatch({
                         type: 'Auth - Login', 
                         payload: { 
@@ -92,7 +93,7 @@ export const AuthProvider: FC<{children: ReactNode}> = ({ children }) => {
                 return logout()
             })
             .catch(() => logout());
-    }, [])
+    }, [loginFlag])
 
     if (state.status === 'checking') return <Loading />
 

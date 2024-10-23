@@ -8,9 +8,9 @@ import { FormEvent } from 'react';
 export const Enrollment = () => {
 
     const { name, email, password, onInputChange } = useForm({
-      name: 'dadj',
-      email: 'david@gmail.com',
-      password: '12345678',
+      name: '',
+      email: '',
+      password: '',
     });
 
     const { enrollment } = useAuth();

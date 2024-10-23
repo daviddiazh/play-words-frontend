@@ -28,7 +28,7 @@ export const ListWords = () => {
           <div key={word?.englishWord}>
             <p>{word?.englishWord}</p>
             <ol>
-              {word?.translations?.map(t => <li key={t+word?.englishWord}>{t}</li>)}
+              {word?.translations?.map((t: any) => <li key={t+word?.englishWord}>{t}</li>)}
             </ol>
           </div>
         ))

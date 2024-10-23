@@ -3,7 +3,6 @@ import { Input } from '../../../components/Input'
 import { useAuth } from '../../../context/auth/AuthProvider';
 import { useForm } from '../../../hooks/useForm'
 import styles from './styles.module.css'
-import { FormEvent } from 'react';
 
 export const Login = () => {
 
@@ -14,7 +13,7 @@ export const Login = () => {
 
     const { login } = useAuth();
 
-    const onSubmit = async (e: FormEvent<HTMLFormElement | HTMLFormElement>) => {
+    const onSubmit = async (e: any) => {
         e.preventDefault();
         login({ email, password })
     }
@@ -24,34 +23,29 @@ export const Login = () => {
             <div className={styles.loginContainer}>
                 <div className={styles.loginBox}>
                     <h2 className={styles.title}>Iniciar sesión</h2>
-                    {/* <form 
-                        className={styles.loginForm} 
-                        onSubmit={(e) => onSubmit(e)}
-                    > */}
-                        <Input
-                            name='email'
-                            onChange={onInputChange}
-                            placeholder='Correo Eléctronico'
-                            value={email}
-                            required
-                            type='email'
-                        />
-                        <Input
-                            name='password'
-                            onChange={onInputChange}
-                            placeholder='Contraseña'
-                            value={password}
-                            required
-                            type='password'
-                        />
-                        <button 
-                            // type="submit" 
-                            className={styles.loginButton}
-                            onClick={onSubmit}
-                        >
-                            Ingresar
-                        </button>
-                    {/* </form> */}
+                    <Input
+                        name='email'
+                        onChange={onInputChange}
+                        placeholder='Correo Eléctronico'
+                        value={email}
+                        required
+                        type='email'
+                    />
+                    <Input
+                        name='password'
+                        onChange={onInputChange}
+                        placeholder='Contraseña'
+                        value={password}
+                        required
+                        type='password'
+                    />
+                    <button 
+                        // type="submit" 
+                        className={styles.loginButton}
+                        onClick={onSubmit}
+                    >
+                        Ingresar
+                    </button>
 
                     <p className={styles.o}>ó</p>
 

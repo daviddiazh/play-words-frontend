@@ -23,29 +23,34 @@ export const Login = () => {
             <div className={styles.loginContainer}>
                 <div className={styles.loginBox}>
                     <h2 className={styles.title}>Iniciar sesión</h2>
-                    <Input
-                        name='email'
-                        onChange={onInputChange}
-                        placeholder='Correo Eléctronico'
-                        value={email}
-                        required
-                        type='email'
-                    />
-                    <Input
-                        name='password'
-                        onChange={onInputChange}
-                        placeholder='Contraseña'
-                        value={password}
-                        required
-                        type='password'
-                    />
-                    <button 
-                        // type="submit" 
-                        className={styles.loginButton}
-                        onClick={onSubmit}
+                    <form 
+                        className={styles.loginForm} 
+                        onSubmit={(e) => onSubmit(e)}
                     >
-                        Ingresar
-                    </button>
+                        <Input
+                            name='email'
+                            onChange={onInputChange}
+                            placeholder='Correo Eléctronico'
+                            value={email}
+                            required
+                            type='email'
+                        />
+                        <Input
+                            name='password'
+                            onChange={onInputChange}
+                            placeholder='Contraseña'
+                            value={password}
+                            required
+                            type='password'
+                        />
+                        <button 
+                            // type="submit" 
+                            className={styles.loginButton}
+                            onClick={onSubmit}
+                        >
+                            Ingresar
+                        </button>
+                    </form>
 
                     <p className={styles.o}>ó</p>
 

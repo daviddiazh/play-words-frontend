@@ -2,6 +2,7 @@ import { useAuth } from "../../context/auth/AuthProvider"
 import PW from '../../assets/PlayWords.png'
 import styles from './styles.module.css';
 import { Icon } from "../Icon";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
 
@@ -11,10 +12,11 @@ export const Header = () => {
     <div className={styles.container}>
       <header>
         <div className={styles['logo-container']}>
-          <img src={PW} alt="Logo de Play" className={styles.logo} />
+          <Link to='/'>
+            <img src={PW} alt="Logo de Play" className={styles.logo} />
+          </Link>
         </div>
         {
-          // status === 'authenticated' && <button onClick={logout}>Logout</button>
           status === 'authenticated'
             ? (<div onClick={logout} style={{ cursor: 'pointer' }}>
               <Icon name="log-out-01" size={20} />

@@ -20,14 +20,14 @@ export const Login = () => {
     }
 
     return (
-        <div style={{ width: '100vw', height: '98vh' }}>
+        <div style={{ width: '100%', height: '98vh' }}>
             <div className={styles.loginContainer}>
                 <div className={styles.loginBox}>
                     <h2 className={styles.title}>Iniciar sesión</h2>
-                    <form 
+                    {/* <form 
                         className={styles.loginForm} 
                         onSubmit={(e) => onSubmit(e)}
-                    >
+                    > */}
                         <Input
                             name='email'
                             onChange={onInputChange}
@@ -45,12 +45,13 @@ export const Login = () => {
                             type='password'
                         />
                         <button 
-                            type="submit" 
+                            // type="submit" 
                             className={styles.loginButton}
+                            onClick={onSubmit}
                         >
                             Ingresar
                         </button>
-                    </form>
+                    {/* </form> */}
 
                     <p className={styles.o}>ó</p>
 

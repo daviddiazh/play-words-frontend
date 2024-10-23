@@ -21,7 +21,7 @@ export const Enrollment = () => {
     }
 
     return (
-      <div style={{ width: '100vw', height: '98vh' }}>
+      <div style={{ width: '100%', height: '98vh' }}>
         <div className={styles.loginContainer}>
           <div className={styles.loginBox}>
             <h2 className={styles.title}>Crea una cuenta</h2>

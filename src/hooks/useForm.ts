@@ -13,7 +13,7 @@ export const useForm = <T extends object>( initState: T ) => {
         });
     }
 
-    const resetFields = ( field: keyof T ) => {
+    const onResetForm = ( field: keyof T ) => {
         setFormState({
             ...formState,
             [field]: ''
@@ -24,7 +24,7 @@ export const useForm = <T extends object>( initState: T ) => {
         ...formState,
         form: formState,
         onInputChange,
-        resetFields
+        onResetForm
     }
 
 }

@@ -7,6 +7,10 @@ interface OptProps {
 export function useHandleErrors (opt: OptProps) {
   const validate = async (error: any) => {
     console.log({ error })
+    if (error?.statusCode === 401 || error?.statusCode === 403 || error?.code === 401) {
+      await opt?.logout();
+    }
+
     toast.error(error?.message || error?.error?.description, {
       position: "top-right",
       autoClose: 6000,
@@ -18,9 +22,6 @@ export function useHandleErrors (opt: OptProps) {
       theme: 'colored',
       transition: Bounce,
     });
-    if (error?.statusCode === 401 || error?.statusCode === 403 || error?.code === 401) {
-      await opt?.logout();
-    }
   }
 
   return {

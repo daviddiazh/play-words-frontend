@@ -4,7 +4,7 @@ export const useForm = <T extends object>( initState: T ) => {
 
     const [ formState, setFormState ] = useState( initState );
 
-    const onInputChange = ({ target }: {target: { name: string, value: string}}) => {
+    const onInputChange = ({ target }: {target: { name: string, value: string | number}}) => {
         const { name, value } = target;
 
         setFormState({

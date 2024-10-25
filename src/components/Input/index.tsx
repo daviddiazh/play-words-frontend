@@ -7,18 +7,24 @@ export const Input = ({
     value, 
     required, 
     type,
+    isError,
     onChange,
 }: InputProps) => {
     return (
-        <input 
-            type={type}
-            className={styles.input}
-            placeholder={placeholder}
-            required={required}
-            name={name}
-            value={value}
-            onChange={onChange}
-            autoComplete='off'
-        />
+        <div style={{ width: '100%' }}>
+            <input 
+                type={type}
+                className={isError ? styles.inputError : styles.input}
+                placeholder={placeholder}
+                required={required}
+                name={name}
+                value={value}
+                onChange={onChange}
+                autoComplete='off'
+            />
+            {
+                isError && <p className={styles.textError}>La respuesta ingresada es incorrecta, pero puedes intentarlo de nuevo</p>
+            }
+        </div>
     )
 }

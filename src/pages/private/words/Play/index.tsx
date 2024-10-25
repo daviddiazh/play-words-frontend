@@ -1,22 +1,26 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useAuth } from "../../../../context/auth/AuthProvider";
 import { useAxios } from "../../../../hooks/useAxios";
 import { currentDate } from "../../../../utils/current-date";
 import { Input } from "../../../../components/Input";
 import { useForm } from "../../../../hooks/useForm";
 import styles from './styles.module.css'
+import { isValidWord } from "../../../../utils/validate-words";
 
 export const Play = () => {
   const [ words, setWords ] = useState<any[]>([]);
   const [ index, setIndex ] = useState(0);
+  const [ isError, setIsError ] = useState(false);
 
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const { post } = useAxios({
     logout
   });
-  const { answer, onInputChange, onResetForm } = useForm({
+  const { answer, attemptsState, onInputChange, onResetForm } = useForm({
     answer: '',
+    attemptsState: 0,
   });
+  const userAnswers = useRef<any[]>([])
 
   const fetch = async () => {
     const resp = await post('/api/exam/today', { today: currentDate })
@@ -24,9 +28,38 @@ export const Play = () => {
   }
 
   const validateAnswer = () => {
+    setIsError(false)
+    const isValid = isValidWord(words[index].englishWord, answer)
+    console.log({ isValid })
+
+    if ( !isValid && attemptsState === 0 ) {
+      setIsError(true)
+      onResetForm('answer')
+      onInputChange({
+        target: {
+          name: 'attemptsState',
+          value: 1,
+        }
+      })
+      return;
+    }
+    const attemptBackend = words[index]?.attempts ?? 0
+    const attempt: any = attemptBackend > 1 && attemptsState === 0 ? attemptBackend - 1 : attemptBackend + attemptsState
+    userAnswers?.current?.push({
+      userId: user?._id,
+      wordId: words[index]?._id,
+      newValues: {
+        attempts: attempt,
+        lastReview: currentDate,
+        // showAt: //TODO
+      }
+    })
+    //todo ----------- end
     onResetForm('answer')
-    setIndex(index + 1) //todo
+    setIndex(index + 1)
   }
+
+  console.log({ userAnswers })
 
   return (
     <div className={styles.container}>
@@ -35,7 +68,7 @@ export const Play = () => {
       }
       
       {
-        words.length ? (
+        words.length && index + 1 <= words.length ? (
           <div className={styles['play-container']}>
             <p className={styles.word}>{ words[index]?.translations?.[0] }</p>
             {/* <p>{ words[index]?.sentence }</p> */}
@@ -46,13 +79,14 @@ export const Play = () => {
               value={answer}
               required
               key="text"
+              isError={isError}
             />
             <button 
               onClick={validateAnswer}
-              className={styles.btn}
-            >Envíar respuesta</button>
+              className={isError ? styles.errorBtn : styles.btn}
+            >{isError ? 'Reintenar respuesta' : 'Envíar respuesta'}</button>
 
-            <p>{ index + 1 }/{ words?.length }</p>
+            <p className={styles.index}>{ index + 1 }/{ words?.length }</p>
           </div>
         ) : null
       }

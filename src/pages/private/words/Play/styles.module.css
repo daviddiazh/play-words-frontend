@@ -41,3 +41,36 @@
 .btn:active {
     transform: scale(0.98);
 }
+
+.index {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.errorBtn {
+    width: 100%;
+    margin: 0;
+    padding: 15px;
+    background-color: #dc2626;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.errorBtn:hover {
+    background-color: #c72020;
+}
+
+.errorBtn:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+    .play-container {
+        width: 100%;
+    }
+}

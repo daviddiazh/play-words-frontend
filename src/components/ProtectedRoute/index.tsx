@@ -4,10 +4,9 @@ import { ProtectedRouteProps } from "./interface";
 import { useAuth } from "../../context/auth/AuthProvider";
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, roles }) => {
-    const { status, logout, user } = useAuth();
+    const { status, user } = useAuth();
 
     if( status === 'not-authenticated' ) {
-        logout();
         return <Navigate to='/' />;
     }
 
@@ -15,5 +14,5 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, roles 
         return <Navigate to='/' />;
     }
 
-    return children;
+    return children
 }

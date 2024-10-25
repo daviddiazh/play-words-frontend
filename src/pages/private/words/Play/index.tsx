@@ -4,8 +4,8 @@ import { useAxios } from "../../../../hooks/useAxios";
 import { currentDate } from "../../../../utils/current-date";
 import { Input } from "../../../../components/Input";
 import { useForm } from "../../../../hooks/useForm";
-import styles from './styles.module.css'
 import { isValidWord } from "../../../../utils/validate-words";
+import styles from './styles.module.css'
 
 export const Play = () => {
   const [ words, setWords ] = useState<any[]>([]);
@@ -27,25 +27,32 @@ export const Play = () => {
     setWords(resp)
   }
 
+  const nextQuestion = () => {
+    if (index <= words?.length) {
+      setIndex(index + 1)
+      onResetForm()
+    }
+  }
+
   const validateAnswer = () => {
     setIsError(false)
     const isValid = isValidWord(words[index].englishWord, answer)
     console.log({ isValid })
 
-    if ( !isValid && attemptsState === 0 ) {
+    if ( !isValid && attemptsState <= 1 ) {
       setIsError(true)
-      onResetForm('answer')
       onInputChange({
         target: {
           name: 'attemptsState',
-          value: 1,
+          value: attemptsState + 1,
         }
       })
       return;
     }
 
     const attemptBackend = words[index]?.attempts ?? 0
-    const attempt: any = attemptBackend > 1 && attemptsState === 0 ? attemptBackend - 1 : attemptBackend + attemptsState
+    const attempt: any = attemptBackend > 1 && attemptsState === 0 ? attemptBackend - 1 : attemptsState === 2 ? attemptBackend + 1 : attemptBackend + 0
+    console.log({ attempt })
     userAnswers?.current?.push({
       userId: user?._id,
       wordId: words[index]?._id,
@@ -55,9 +62,7 @@ export const Play = () => {
         // showAt: //TODO
       }
     })
-    //todo ----------- end
-    onResetForm('answer')
-    setIndex(index + 1)
+    nextQuestion()
   }
 
   console.log({ userAnswers })
@@ -69,10 +74,9 @@ export const Play = () => {
       }
       
       {
-        words.length && index + 1 <= words.length ? (
+        words.length && index + 1 <= words.length && attemptsState < 2 ? (
           <div className={styles['play-container']}>
-            <p className={styles.word}>{ words[index]?.translations?.[0] }</p>
-            {/* <p>{ words[index]?.sentence }</p> */}
+            <p className={styles.word}>{ words[index]?.translations?.join(', ') }</p>
             <Input 
               name='answer'
               placeholder="Ingresa tu respuesta"
@@ -88,12 +92,18 @@ export const Play = () => {
             >{isError ? 'Reintenar respuesta' : 'Envíar respuesta'}</button>
 
             <p className={styles.index}>{ index + 1 }/{ words?.length }</p>
+          </div>
+        ) : null
+      }
 
-            <div>
-              <button>Volver a ver en 1 día</button>
-              <button>Volver a ver en 2 días</button>
-              <button>Volver a ver en 3 días</button>
-            </div>
+      {
+        attemptsState === 2 ? (
+          <div>
+            <p className={styles.sentence}>{ words[index]?.sentence }</p>
+            <button 
+              onClick={validateAnswer}
+              className={styles.errorBtn}
+            >Continuar</button>
           </div>
         ) : null
       }

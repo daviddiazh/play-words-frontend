@@ -69,6 +69,13 @@
     transform: scale(0.98);
 }
 
+.sentence {
+    text-align: center;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 15px 0;
+}
+
 @media (max-width: 768px) {
     .play-container {
         width: 100%;

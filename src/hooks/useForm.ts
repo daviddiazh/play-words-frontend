@@ -13,12 +13,23 @@ export const useForm = <T extends object>( initState: T ) => {
         });
     }
 
-    const onResetForm = ( field: keyof T ) => {
-        setFormState({
-            ...formState,
-            [field]: ''
-        });
-    }
+    // const onResetForm = ( field: keyof T ) => {
+    //     setFormState({
+    //         ...formState,
+    //         [field]: ''
+    //     });
+    // }
+
+    const onResetForm = (field?: keyof T) => {
+        if (field) {
+            setFormState({
+                ...formState,
+                [field]: ''
+            });
+        } else {
+            setFormState(initState); // Restablece el estado a su valor inicial
+        }
+    };
 
     return {
         ...formState,

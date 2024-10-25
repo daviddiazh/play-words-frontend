@@ -43,6 +43,7 @@ export const Play = () => {
       })
       return;
     }
+
     const attemptBackend = words[index]?.attempts ?? 0
     const attempt: any = attemptBackend > 1 && attemptsState === 0 ? attemptBackend - 1 : attemptBackend + attemptsState
     userAnswers?.current?.push({
@@ -87,6 +88,12 @@ export const Play = () => {
             >{isError ? 'Reintenar respuesta' : 'Envíar respuesta'}</button>
 
             <p className={styles.index}>{ index + 1 }/{ words?.length }</p>
+
+            <div>
+              <button>Volver a ver en 1 día</button>
+              <button>Volver a ver en 2 días</button>
+              <button>Volver a ver en 3 días</button>
+            </div>
           </div>
         ) : null
       }

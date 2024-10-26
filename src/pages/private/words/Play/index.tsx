@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Loading } from "../../../../components/Loading";
 import { useSpeech } from "../../../../hooks/useSpeech";
+import { Icon } from "../../../../components/Icon";
 
 export const Play = () => {
   const [ words, setWords ] = useState<any[] | any>(null);
@@ -118,14 +119,22 @@ export const Play = () => {
               key="text"
               isError={isError}
             />
-            <button 
-              onClick={validateAnswer}
-              className={isError ? styles.errorBtn : styles.btn}
-            >{isError ? 'Reintenar respuesta' : 'Envíar respuesta'}</button>
+            <div style={{ width: '100%', display: 'flex', gap: 8 }}>
+              <button
+                onClick={validateAnswer}
+                className={isError ? styles.errorBtn : styles.btn}
+                style={{ width: '85%' }}
+              >{isError ? 'Reintenar respuesta' : 'Envíar respuesta'}</button>
+              <button 
+                onClick={() => speak(words?.[index]?.englishWord)}
+                className={styles.speakBtn}
+                style={{ width: '15%' }}
+              >
+                <Icon name="headphones-02" color="#0fa7ff" />
+              </button>
+            </div>
 
             <p className={styles.index}>{ index + 1 }/{ words?.length }</p>
-
-            <button onClick={() => speak(words?.[index]?.englishWord)}>Speak</button>
           </div>
         ) : null
       }

@@ -1,11 +1,11 @@
 import { useState } from 'react'
+import { Bounce, toast } from 'react-toastify';
 import { TagsInput } from '../../../../components/TagsInput'
-import styles from './styles.module.css'
 import { useForm } from '../../../../hooks/useForm';
 import { Input } from '../../../../components/Input';
 import { useAxios } from '../../../../hooks/useAxios';
 import { useAuth } from '../../../../context/auth/AuthProvider';
-import { Bounce, toast } from 'react-toastify';
+import styles from './styles.module.css'
 
 export const AddWord = () => {
 

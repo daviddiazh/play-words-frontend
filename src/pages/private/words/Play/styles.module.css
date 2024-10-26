@@ -76,6 +76,31 @@
     margin: 15px 0;
 }
 
+.score-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.label {
+    font-size: 17px;
+    font-weight: 500;
+    margin-top: 16px;
+    color: #333;
+}
+
+.well {
+    color: #16a34a;
+    font-weight: 600;
+    font-size: 17px;
+}
+
+.unwell {
+    color: #dc2626;
+    font-weight: 600;
+    font-size: 17px;
+}
+
 @media (max-width: 768px) {
     .play-container {
         width: 100%;

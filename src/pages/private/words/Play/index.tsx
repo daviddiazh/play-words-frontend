@@ -6,14 +6,24 @@ import { Input } from "../../../../components/Input";
 import { useForm } from "../../../../hooks/useForm";
 import { isValidWord } from "../../../../utils/validate-words";
 import styles from './styles.module.css'
+import { nextDate } from "../../../../utils/next-date";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { Loading } from "../../../../components/Loading";
 
 export const Play = () => {
-  const [ words, setWords ] = useState<any[]>([]);
+  const [ words, setWords ] = useState<any[] | any>(null);
   const [ index, setIndex ] = useState(0);
   const [ isError, setIsError ] = useState(false);
+  const [ isLoading, setIsLoading ] = useState(false);
+  const [ showScore, setShowScore ] = useState(false);
+  const [ score, setScore ] = useState({
+    well: 0,
+    unwell: 0
+  })
 
   const { logout, user } = useAuth();
-  const { post } = useAxios({
+  const { post, put } = useAxios({
     logout
   });
   const { answer, attemptsState, onInputChange, onResetForm } = useForm({
@@ -21,14 +31,35 @@ export const Play = () => {
     attemptsState: 0,
   });
   const userAnswers = useRef<any[]>([])
+  const navigate = useNavigate();
 
   const fetch = async () => {
+    setIsLoading(true)
     const resp = await post('/api/exam/today', { today: currentDate })
     setWords(resp)
+    setIsLoading(false)
   }
 
-  const nextQuestion = () => {
-    if (index <= words?.length) {
+  const nextQuestion = async () => {
+    if (words?.length - 1 === index) {
+      setIsLoading(true)
+      const resp = await put('/api/exam/today/apply', userAnswers?.current)
+      const set = userAnswers?.current?.reduce((_, curr) => {
+        if (curr?.newValues?.attempts === 0) {
+          score.well += 1;
+        } else {
+          score.unwell += 1;
+        }
+        return score;
+      }, score)
+      setScore(set);
+      setIsLoading(false)
+      if (resp?.ok) {
+        toast.success('Bien hecho! Completaste tu tarea del día')
+        setIndex(index + 1)
+        setShowScore(true)
+      }
+    } else {
       setIndex(index + 1)
       onResetForm()
     }
@@ -37,7 +68,6 @@ export const Play = () => {
   const validateAnswer = () => {
     setIsError(false)
     const isValid = isValidWord(words[index].englishWord, answer)
-    console.log({ isValid })
 
     if ( !isValid && attemptsState <= 1 ) {
       setIsError(true)
@@ -52,31 +82,30 @@ export const Play = () => {
 
     const attemptBackend = words[index]?.attempts ?? 0
     const attempt: any = attemptBackend > 1 && attemptsState === 0 ? attemptBackend - 1 : attemptsState === 2 ? attemptBackend + 1 : attemptBackend + 0
-    console.log({ attempt })
     userAnswers?.current?.push({
       userId: user?._id,
       wordId: words[index]?._id,
       newValues: {
         attempts: attempt,
         lastReview: currentDate,
-        // showAt: //TODO
+        showAt: nextDate(attemptBackend, attemptsState),
       }
     })
     nextQuestion()
   }
 
-  console.log({ userAnswers })
+  if (isLoading) return <Loading />
 
   return (
     <div className={styles.container}>
       {
-        !words.length && !index && <button className={styles.btn} onClick={fetch}>Comenzar juego</button>
+        !words?.length && !index && <button className={styles.btn} onClick={fetch}>Comenzar juego</button>
       }
       
       {
-        words.length && index + 1 <= words.length && attemptsState < 2 ? (
+        words?.length && index + 1 <= words?.length && attemptsState < 2 ? (
           <div className={styles['play-container']}>
-            <p className={styles.word}>{ words[index]?.translations?.join(', ') }</p>
+            <p className={styles.word}>{ words?.[index]?.translations?.join(', ') }</p>
             <Input 
               name='answer'
               placeholder="Ingresa tu respuesta"
@@ -97,13 +126,36 @@ export const Play = () => {
       }
 
       {
-        attemptsState === 2 ? (
+        attemptsState === 2 && isError ? (
           <div>
-            <p className={styles.sentence}>{ words[index]?.sentence }</p>
+            <p style={{ padding: '25px 0' }}>Ejemplo: <span className={styles.sentence}>{ words?.[index]?.sentence }</span></p>
             <button 
               onClick={validateAnswer}
               className={styles.errorBtn}
             >Continuar</button>
+          </div>
+        ) : null
+      }
+
+      {
+        words?.length === 0 ? (
+          <div>
+            <p className={styles.sentence}>No tienes palabras para hoy</p>
+          </div>
+        ) : null
+      }
+
+      {
+        showScore ? (
+          <div>
+            <p className={styles['score-text']}>Felicidades, has terminado y este es tu Score:</p>
+            <p className={styles.label}>Buenas: <span className={styles.well}>{score.well}</span></p>
+            <p className={styles.label}>Por mejorar: <span className={styles.unwell}>{score.unwell}</span></p>
+            <button 
+              onClick={() => navigate('/')}
+              className={styles.btn}
+              style={{ marginTop: 10 }}
+            >Finalizar</button>
           </div>
         ) : null
       }

@@ -1,3 +1,3 @@
 import { DateTime } from 'luxon';
 
-export const currentDate = DateTime.now().toUTC().toJSDate();
+export const currentDate = DateTime.now().toJSDate();

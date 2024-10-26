@@ -6,8 +6,8 @@ export const useSpeech = () => {
       const utterance = new SpeechSynthesisUtterance(text);
 
       utterance.lang = 'en-US';
-      utterance.pitch = 1.3; // Voice tone
-      utterance.rate = 0.5; // Speak speed
+      utterance.pitch = 1; // Voice tone
+      utterance.rate = 0.8; // Speak speed
 
       // string speaking
       window.speechSynthesis.speak(utterance);

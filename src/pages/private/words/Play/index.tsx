@@ -10,6 +10,7 @@ import { nextDate } from "../../../../utils/next-date";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Loading } from "../../../../components/Loading";
+import { useSpeech } from "../../../../hooks/useSpeech";
 
 export const Play = () => {
   const [ words, setWords ] = useState<any[] | any>(null);
@@ -17,6 +18,7 @@ export const Play = () => {
   const [ isError, setIsError ] = useState(false);
   const [ isLoading, setIsLoading ] = useState(false);
   const [ showScore, setShowScore ] = useState(false);
+
   const [ score, setScore ] = useState({
     well: 0,
     unwell: 0
@@ -32,6 +34,7 @@ export const Play = () => {
   });
   const userAnswers = useRef<any[]>([])
   const navigate = useNavigate();
+  const { speak } = useSpeech();
 
   const fetch = async () => {
     setIsLoading(true)
@@ -67,7 +70,7 @@ export const Play = () => {
 
   const validateAnswer = () => {
     setIsError(false)
-    const isValid = isValidWord(words[index].englishWord, answer)
+    const isValid = isValidWord(words[index]?.englishWord, answer)
 
     if ( !isValid && attemptsState <= 1 ) {
       setIsError(true)
@@ -121,6 +124,8 @@ export const Play = () => {
             >{isError ? 'Reintenar respuesta' : 'Envíar respuesta'}</button>
 
             <p className={styles.index}>{ index + 1 }/{ words?.length }</p>
+
+            <button onClick={() => speak(words?.[index]?.englishWord)}>Speak</button>
           </div>
         ) : null
       }

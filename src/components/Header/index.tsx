@@ -1,12 +1,14 @@
+import { Link } from "react-router-dom";
 import { useAuth } from "../../context/auth/AuthProvider"
 import PW from '../../assets/PlayWords.png'
 import styles from './styles.module.css';
 import { Icon } from "../Icon";
-import { Link } from "react-router-dom";
 
 export const Header = () => {
 
   const { logout, status } = useAuth();
+
+  console.log({ status })
 
   return (
     <div className={styles.container}>

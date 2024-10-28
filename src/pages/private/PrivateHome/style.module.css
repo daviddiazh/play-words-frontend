@@ -8,6 +8,26 @@
 .user-name {
   font-size: 1.3rem;
   font-weight: 500;
-  margin: 1rem 0;
+  margin: 1.5rem 0;
   text-align: center;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-auto-rows: 4rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  margin: 0 15px;
+  margin-bottom: 20px;
+}
+
+.card {
+  grid-column: span 2;
+
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

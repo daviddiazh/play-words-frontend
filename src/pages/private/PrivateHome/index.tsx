@@ -10,15 +10,15 @@ export const PrivateHome = () => {
   return (
     <div className={styles.container}>
       <p className={styles['user-name']}>Bienvenido(a) {user?.name}</p>
-      <div>
+      <div style={{ marginTop: 25 }}>
         {
           user?.role === Role.ADMIN || user?.role === Role.WRITER ? (
-            <div>
-              <Link to='/words/add'>
+            <div className={styles.grid}>
+              <Link to='/words/add' className={styles.card}>
                 <p>Agregar palabra</p>
               </Link>
-              <Link to='/words'>
-                <p>Ver las palabras</p>
+              <Link to='/words' className={styles.card}>
+                <p>Lista de palabras</p>
               </Link>
             </div>
           ) : null
@@ -26,11 +26,11 @@ export const PrivateHome = () => {
 
         {
           user?.role === Role.ADMIN || user?.role === Role.READER ? (
-            <div>
-              <Link to='/words/play'>
+            <div className={styles.grid}>
+              <Link to='/words/play' className={styles.card}>
                 <p>Palabras de hoy</p>
               </Link>
-              <Link to='/words/review'>
+              <Link to='/words/review' className={styles.card}>
                 <p>Solo repaso</p>
               </Link>
             </div>

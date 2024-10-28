@@ -173,7 +173,7 @@ export const Play = () => {
             <h3 style={{ padding: '20px 0' }}>Repaso de hoy</h3>
             {
               words?.map((word: any) => (
-                <div className={styles.childrenScore}>
+                <div className={styles.childrenScore} key={word?.englishWord}>
                   <p>{word?.englishWord}</p>
                   <button 
                     onClick={() => speak(word?.englishWord)}

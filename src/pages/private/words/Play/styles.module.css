@@ -39,7 +39,7 @@
     margin: 0;
     padding: 10px 0;
     background-color: #fff;
-    border: 1px solid #0fa7ff;
+    border: 2px solid #0fa7ff;
     color: #0fa7ff;
     border-radius: 8px;
     font-size: 16px;
@@ -124,4 +124,31 @@
     .play-container {
         width: 100%;
     }
+
+    .scoreDiv {
+        width: 100%;
+        margin-top: 150px;
+    }
+}
+
+.scoreDiv {
+    width: 100%;
+}
+
+.childrenScore {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+    padding: 0 15px;
+}
+
+.listen {
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 8px 15px;
+    background-color: #0fa7ff;
+    color: #fff;
+    border-radius: 8px;
 }

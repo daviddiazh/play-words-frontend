@@ -123,15 +123,19 @@ export const Play = () => {
               <button
                 onClick={validateAnswer}
                 className={isError ? styles.errorBtn : styles.btn}
-                style={{ width: '85%' }}
+                style={{ width: isError ? '85%' : '100%' }}
               >{isError ? 'Reintenar respuesta' : 'Envíar respuesta'}</button>
-              <button 
-                onClick={() => speak(words?.[index]?.englishWord)}
-                className={styles.speakBtn}
-                style={{ width: '15%' }}
-              >
-                <Icon name="headphones-02" color="#0fa7ff" />
-              </button>
+              {
+                isError ? (
+                  <button 
+                    onClick={() => speak(words?.[index]?.englishWord)}
+                    className={styles.speakBtn}
+                    style={{ width: '15%' }}
+                  >
+                    <Icon name="headphones-02" color="#0fa7ff" />
+                  </button>
+                ) : null
+              }
             </div>
 
             <p className={styles.index}>{ index + 1 }/{ words?.length }</p>
@@ -161,10 +165,26 @@ export const Play = () => {
 
       {
         showScore ? (
-          <div>
-            <p className={styles['score-text']}>Felicidades, has terminado y este es tu Score:</p>
+          <div className={styles.scoreDiv}>
+            <p className={styles['score-text']}>Terminaste y este es tu Score:</p>
             <p className={styles.label}>Buenas: <span className={styles.well}>{score.well}</span></p>
             <p className={styles.label}>Por mejorar: <span className={styles.unwell}>{score.unwell}</span></p>
+
+            <h3 style={{ padding: '20px 0' }}>Repaso de hoy</h3>
+            {
+              words?.map((word: any) => (
+                <div className={styles.childrenScore}>
+                  <p>{word?.englishWord}</p>
+                  <button 
+                    onClick={() => speak(word?.englishWord)}
+                    className={styles.listen}
+                  >
+                    Escuchar
+                  </button>
+                </div>
+              ))
+            }
+
             <button 
               onClick={() => navigate('/')}
               className={styles.btn}

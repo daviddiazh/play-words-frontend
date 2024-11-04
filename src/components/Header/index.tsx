@@ -6,9 +6,7 @@ import { Icon } from "../Icon";
 
 export const Header = () => {
 
-  const { logout, status } = useAuth();
-
-  console.log({ status })
+  const { logout, user } = useAuth();
 
   return (
     <div className={styles.container}>
@@ -18,13 +16,16 @@ export const Header = () => {
             <img src={PW} alt="Logo de Play" className={styles.logo} />
           </Link>
         </div>
-        {
-          status === 'authenticated'
-            ? (<div onClick={logout} style={{ cursor: 'pointer' }}>
-              <Icon name="log-out-01" size={20} />
-            </div>)
-            : <p className={styles.name}>by. David Diaz H</p>
-        }
+        
+        <div>
+          {
+            user?.name
+              ? (<div onClick={logout} style={{ cursor: 'pointer' }}>
+                <Icon name="cerrar-sesion-02" size={15} color="#000" />
+              </div>)
+              : <p className={styles.name}>by. David Diaz H</p>
+          }
+        </div>
       </header>
     </div>
   )

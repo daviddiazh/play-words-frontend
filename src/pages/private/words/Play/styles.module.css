@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 94vh;
+    height: 90vh;
     width: 100%;
     flex-direction: column;
 }
@@ -127,12 +127,14 @@
 
     .scoreDiv {
         width: 100%;
-        margin-top: 150px;
+        margin-top: 50px;
     }
 }
 
 .scoreDiv {
     width: 100%;
+    height: 100%;
+    margin-top: 50px;
 }
 
 .childrenScore {

@@ -109,33 +109,42 @@ export const Play = () => {
       {
         words?.length && index + 1 <= words?.length && attemptsState < 2 ? (
           <div className={styles['play-container']}>
-            <p className={styles.word}>{ words?.[index]?.translations?.join(', ') }</p>
-            <Input 
-              name='answer'
-              placeholder="Ingresa tu respuesta"
-              onChange={onInputChange}
-              value={answer}
-              required
-              key="text"
-              isError={isError}
-            />
-            <div style={{ width: '100%', display: 'flex', gap: 8 }}>
-              <button
-                onClick={validateAnswer}
-                className={isError ? styles.errorBtn : styles.btn}
-                style={{ width: isError ? '85%' : '100%' }}
-              >{isError ? 'Reintenar respuesta' : 'Envíar respuesta'}</button>
-              {
-                isError ? (
-                  <button 
-                    onClick={() => speak(words?.[index]?.englishWord)}
-                    className={styles.speakBtn}
-                    style={{ width: '15%' }}
-                  >
-                    <Icon name="headphones-02" color="#0fa7ff" />
-                  </button>
-                ) : null
-              }
+            <div style={{ width: '100%' }}>
+              <div style={{ padding: '0 15px' }}>
+                <p className={styles.word}>{ words?.[index]?.translations?.join(', ') }</p>
+                <form onSubmit={e => {
+                  e.preventDefault();
+                  validateAnswer()
+                }}>
+                  <Input 
+                    name='answer'
+                    placeholder="Ingresa tu respuesta"
+                    onChange={onInputChange}
+                    value={answer}
+                    required
+                    key="text"
+                    isError={isError}
+                  />
+                </form>
+                <div style={{ width: '100%', display: 'flex', gap: 8 }}>
+                  <button
+                    className={isError ? styles.errorBtn : styles.btn}
+                    style={{ width: isError ? '85%' : '100%' }}
+                    onClick={validateAnswer}
+                  >{isError ? 'Reintenar respuesta' : 'Envíar respuesta'}</button>
+                  {
+                    isError ? (
+                      <button 
+                        onClick={() => speak(words?.[index]?.englishWord)}
+                        className={styles.speakBtn}
+                        style={{ width: '15%' }}
+                      >
+                        <Icon name="headphones-02" color="#0fa7ff" />
+                      </button>
+                    ) : null
+                  }
+                </div>
+              </div>
             </div>
 
             <p className={styles.index}>{ index + 1 }/{ words?.length }</p>
@@ -145,12 +154,14 @@ export const Play = () => {
 
       {
         attemptsState === 2 && isError ? (
-          <div>
-            <p style={{ padding: '25px 0' }}>Ejemplo: <span className={styles.sentence}>{ words?.[index]?.sentence }</span></p>
-            <button 
-              onClick={validateAnswer}
-              className={styles.errorBtn}
-            >Continuar</button>
+          <div style={{ width: '100%' }}>
+            <div style={{ padding: '0 15px' }}>
+              <p style={{ padding: '25px 0' }}>Ejemplo: <span className={styles.sentence}>{ words?.[index]?.sentence }</span></p>
+              <button 
+                onClick={validateAnswer}
+                className={styles.errorBtn}
+              >Continuar</button>
+            </div>
           </div>
         ) : null
       }
@@ -166,21 +177,31 @@ export const Play = () => {
       {
         showScore ? (
           <div className={styles.scoreDiv}>
-            <p className={styles['score-text']}>Terminaste y este es tu Score:</p>
-            <p className={styles.label}>Buenas: <span className={styles.well}>{score.well}</span></p>
-            <p className={styles.label}>Por mejorar: <span className={styles.unwell}>{score.unwell}</span></p>
+            <div style={{ padding: '0 15px' }}>
+              <p className={styles['score-text']}>Terminaste y este es tu Score:</p>
+              <p className={styles.label}>Buenas: <span className={styles.well}>{score.well}</span></p>
+              <p className={styles.label}>Por mejorar: <span className={styles.unwell}>{score.unwell}</span></p>
+            </div>
 
-            <h3 style={{ padding: '20px 0' }}>Repaso de hoy</h3>
+            <h3 style={{ padding: '20px 15px' }}>Repaso de hoy</h3>
             {
               words?.map((word: any) => (
                 <div className={styles.childrenScore} key={word?.englishWord}>
                   <p>{word?.englishWord}</p>
-                  <button 
-                    onClick={() => speak(word?.englishWord)}
-                    className={styles.listen}
-                  >
-                    Escuchar
-                  </button>
+                  <div style={{ gap: 10, display: 'flex' }}>
+                    <button
+                      onClick={() => speak(word?.englishWord)}
+                      className={styles.listen}
+                    >
+                      <Icon name="headphones-01" color="#fff" size={15} />
+                    </button>
+                    <button
+                      onClick={() => speak(word?.sentence)}
+                      className={styles.listen}
+                    >
+                      <Icon name="podcast" color="#fff" size={15} />
+                    </button>
+                  </div>
                 </div>
               ))
             }
